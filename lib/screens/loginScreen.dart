@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_online_store_1/services/AuthService.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key, this.toggleScreen}) : super(key: key);
@@ -10,9 +12,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   // key reference to the Form widget
   GlobalKey<FormState> _formKey = GlobalKey();
+  // Auth service instance
+  AuthService _authService = AuthService();
+  // Variables that will hold the text field input
+  String _email;
+  String _password;
+
+  // Variable to check if the authentication process is loading
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text("LOGIN PAGE"),
       ),
-      body: Center(
+      body:
+        // hide all of the text fields and button when loading is true
+        // _isLoading ? 
+        // Center(
+        //   child: CircularProgressIndicator()
+        // ) 
+        // : Center(
+        // child: Container(
+       Center(
         child: Container(
           padding: EdgeInsets.all(20),
           // change the column to listview
@@ -42,6 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextFormField(
+                      // disable when the user triggered the loading
+                      enabled: !_isLoading,
                       decoration: InputDecoration(
                         labelText: "Email",
                         hintText: "example@gmail.com",
@@ -62,12 +81,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                           _email = value;                     
+                        });
+                      },
                     ),
                     // Add space
                     SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      enabled: !_isLoading,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Password",
@@ -101,6 +126,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           return 'Passwordd need at least one special character like !@#\$&*~-';
                         return null;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                           _password = value;                     
+                        });
+                      },
                     )
                   ],
                 ),
@@ -108,10 +138,25 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 20,
               ),
+              _isLoading ? Center( child: CircularProgressIndicator()) : Container(),
               ElevatedButton.icon(
-                onPressed: (){
+                // disable when the user triggered the loading
+                onPressed: _isLoading ? null : () async {
                   if(_formKey.currentState.validate()){
+                    setState(() {
+                      _isLoading = true;                   
+                    });
+                    
                     print("All forms are validated");
+                    FirebaseUser user = await _authService.loginUser(_email, _password);
+                    if(user != null) {
+                      Navigator.pushReplacementNamed(context, 'dash');
+                    } else {
+                      print('Error logging in!');
+                      setState(() {
+                        _isLoading = false;                   
+                      });
+                    }
                   } else {
                     print("Please check your input");
                   }
@@ -120,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 label: Text("LOGIN"),
               ),
               ElevatedButton.icon(
-                onPressed: (){
+                onPressed: _isLoading ? null : (){
                   widget.toggleScreen();
                 }, 
                 icon: Icon(Icons.arrow_left), 

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_online_store_1/services/AuthService.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key key, this.toggleScreen}) : super(key: key);
@@ -14,8 +16,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   GlobalKey<FormState> _formKey = GlobalKey();
 
   // Variables to hold
+  String _email;
   String _password;
   bool _didAgree = false;
+
+  // Authentication service
+  AuthService _authService = AuthService();
+
+  // Variable to determine if the authentication process is loading
+  bool _isLoading =false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     // form field widgets with validator properties
                     TextFormField(
+                      // disable the text field when it is loading
+                      enabled: !_isLoading,
                       decoration: InputDecoration(
                         labelText: "First name",
                         hintText: "John",
@@ -58,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 20,
                     ),
                     TextFormField(
+                      enabled: !_isLoading,
                       decoration: InputDecoration(
                         labelText: "Last name",
                         hintText: "Doe",
@@ -78,6 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 20,
                     ),
                     TextFormField(
+                      enabled: !_isLoading,
                       decoration: InputDecoration(
                         labelText: "Email",
                         hintText: "example@gmail.com",
@@ -97,11 +110,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          _email = value;                          
+                        });
+                      },
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      enabled: !_isLoading,
                       // hide the input of the textfield
                       // similar to passwords
                       obscureText: true,
@@ -148,6 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     // Confirm password
                     TextFormField(
+                      enabled: !_isLoading,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
@@ -169,6 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     // Checkbox for Agreement
                     FormField(
+                      enabled: !_isLoading,
                       initialValue: _didAgree,
                       validator: (value) {
                         if(!value)
@@ -203,16 +224,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ),
-
+              _isLoading ? Center( child: CircularProgressIndicator()) : Container(),
               SizedBox(
                 height: 20,
               ),
               ElevatedButton.icon(
-                onPressed: (){
+                // return null on onPress to disable it
+                onPressed: _isLoading ? null : () async {
                   // trigger the validator property function of each form field
                   // present inside the Form widget
                   if(_formKey.currentState.validate()) {
                     print("User is ready to register");
+                    // set the isLoading to true to show the loading indicator
+                    setState(() {
+                      _isLoading = true;          
+                    });
+                    // Call the register function
+                    FirebaseUser user = await _authService.registerUser(_email, _password);
+                    if(user != null) {
+                      Navigator.pushReplacementNamed(context, 'dash');
+                    } else {
+                      print('Error logging in!');
+                      // hide the error when Firebase returned an error
+                      setState(() {
+                      _isLoading = false;          
+                    });
+                    }
                   } else {
                     print("Please validate your info");
                   }
@@ -221,7 +258,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 label: Text("REGISTER"),
               ),
               ElevatedButton.icon(
-                onPressed: (){
+                onPressed: _isLoading ? null : (){
                   widget.toggleScreen();
                 }, 
                 icon: Icon(Icons.arrow_left), 

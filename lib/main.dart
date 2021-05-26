@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_online_store_1/screens/authScreen.dart';
+import 'package:my_online_store_1/screens/dashboardScreen.dart';
 import 'package:my_online_store_1/screens/loginScreen.dart';
+import 'package:my_online_store_1/screens/splashScreen.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -20,6 +23,12 @@ void main() {
   // adding space between pages
   // making page scrollable
   // adding logo to login
+
+// Add authentication to the app
+// login, sign up
+// additional updates, adding loading screen when authentication process is ongoing
+// check if the user logged in previously
+// logout
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -39,7 +48,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: AuthScreen(),
+      // home: AuthScreen(),
+
+      initialRoute: 'splash',
+      routes: {
+        'splash': (context) => SplashScreen(),
+        'auth' : (context) => AuthScreen(),
+        'dash' : (context) => DashboardScreen(),
+      },
+
     );
   }
 }

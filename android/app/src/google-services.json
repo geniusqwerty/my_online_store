@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824282819489",
+    "project_id": "cit-238-sample-project",
+    "storage_bucket": "cit-238-sample-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824282819489:android:8a027d3420bebd8bbe79e0",
+        "android_client_info": {
+          "package_name": "com.wvsu.myonlinestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824282819489-jatl85hq3cmbn9uak45k71m4irrujslj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCA-XyviKSjjg9Hrgc-WBLAnt391FqZWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824282819489-jatl85hq3cmbn9uak45k71m4irrujslj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
