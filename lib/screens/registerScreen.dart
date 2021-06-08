@@ -16,6 +16,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   GlobalKey<FormState> _formKey = GlobalKey();
 
   // Variables to hold
+  String _firstName;
+  String _lastName;
   String _email;
   String _password;
   bool _didAgree = false;
@@ -64,6 +66,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        _firstName = value;
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -84,6 +89,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return "Last name is required";
                         }
                         return null;
+                      },
+                      onChanged: (value) {
+                        _lastName = value;
                       },
                     ),
                     SizedBox(
@@ -240,9 +248,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       _isLoading = true;          
                     });
                     // Call the register function
-                    FirebaseUser user = await _authService.registerUser(_email, _password);
+                    FirebaseUser user = await _authService.registerUser(_firstName, _lastName, _email, _password);
                     if(user != null) {
-                      Navigator.pushReplacementNamed(context, 'dash');
+                      Navigator.pushReplacementNamed(context, 'dash', arguments: user.uid);
                     } else {
                       print('Error logging in!');
                       // hide the error when Firebase returned an error

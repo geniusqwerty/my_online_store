@@ -2,6 +2,7 @@
 // Authentication
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_online_store_1/services/DatabaseService.dart';
 
 class AuthService {
   // Instance to access the Firebase API
@@ -22,9 +23,13 @@ class AuthService {
   }
 
   // Register function
-  Future registerUser(String email, String password) async {
+  Future registerUser(String firstName, String lastName, String email, String password) async {
     try {
-       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      
+      // Save user data on firestore
+      await DatabaseService(uid: result.user.uid).addUserData(email, firstName, lastName);
+
       // return the user object
       print(result);
       return result.user;
