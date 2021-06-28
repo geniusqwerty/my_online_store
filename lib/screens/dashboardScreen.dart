@@ -41,6 +41,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // Text("Welcome to your Dashboard!"),
               displayUserdata(),
               displayItems(),
+              
+              // Button to navigate to the Cart Screen
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'cart');
+                }, 
+                icon: Icon(Icons.shopping_bag_outlined), 
+                label: Text("My Cart")),
             ],
           ),
         ),
@@ -103,12 +111,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onPressed: () async {
                         print("Added to cart");
                         await DatabaseService(uid: userId).addToCart(items[index].reference.documentID);
+                        // Show a message on the Snackbar confirming that we've added an item to the cart
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Item has been added to cart!"))
                         );
                       },
                     ),
                     onTap: () {
+                      // Since we cannot put two or more variables directly to the arguments
+                      // we can create a Map variable that will contain the needed variables
                       Map<String, dynamic> args = new Map();
                       args['userId'] = userId;
                       args['item'] = items[index];

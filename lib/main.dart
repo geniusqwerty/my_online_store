@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_online_store_1/screens/authScreen.dart';
+import 'package:my_online_store_1/screens/cartScreen.dart';
 import 'package:my_online_store_1/screens/dashboardScreen.dart';
 import 'package:my_online_store_1/screens/itemInfoScreen.dart';
 import 'package:my_online_store_1/screens/loginScreen.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         'auth' : (context) => AuthScreen(),
         'dash' : (context) => DashboardScreen(),
         'itemInfo' : (context) => ItemInfoScreen(),
+        'cart': (context) => CartScreen(),
       },
 
     );

@@ -63,4 +63,36 @@ class DatabaseService {
       return null;
     }
   }
+
+  // Function to fetch the cart of the specific user
+  Stream<QuerySnapshot> fetchCart() {
+    try {
+      return cartRef.
+      where("userId", isEqualTo: uid)
+      .snapshots();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Fetch the product based on the product id
+  Future fetchItemInfo(String itemId) async {
+    try {
+      return await itemRef.document(itemId).get();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Function to delete the cart based on the cartId
+  Future deleteCart(String cartId) async {
+    try {
+      return await cartRef.document(cartId).delete();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
