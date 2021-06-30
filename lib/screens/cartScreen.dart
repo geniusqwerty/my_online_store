@@ -66,7 +66,9 @@ class _CartScreenState extends State<CartScreen> {
                         trailing:  IconButton(
                           icon: Icon(Icons.delete_forever),
                           onPressed: () async {
-                            await DatabaseService().deleteCart(carts[index].reference.documentID);
+                            // Old code
+                            // await DatabaseService().deleteCart(carts[index].reference.documentID);
+                            await DatabaseService().deleteCart(carts[index].id);
                            
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Item has been removed from your cart!"))

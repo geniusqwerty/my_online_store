@@ -116,7 +116,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       icon: Icon(Icons.add),
                       onPressed: () async {
                         print("Added to cart");
-                        await DatabaseService(uid: userId).addToCart(items[index].reference.documentID);
+                        // Old code
+                        // await DatabaseService(uid: userId).addToCart(items[index].reference.documentID);
+                        await DatabaseService(uid: userId).addToCart(items[index].id);
                         // Show a message on the Snackbar confirming that we've added an item to the cart
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Item has been added to cart!"))
