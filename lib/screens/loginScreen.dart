@@ -148,7 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                     
                     print("All forms are validated");
-                    FirebaseUser user = await _authService.loginUser(_email, _password);
+                    // Old version code
+                    // FirebaseUser user = await _authService.loginUser(_email, _password);
+                    User user = await _authService.loginUser(_email, _password);
                     if(user != null) {
                       Navigator.pushReplacementNamed(context, 'dash', arguments: user.uid);
                     } else {

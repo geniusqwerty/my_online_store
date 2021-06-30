@@ -11,7 +11,7 @@ class AuthService {
   // Login function
   Future loginUser(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       // return the user object
       print(result);
       return result.user;
@@ -25,7 +25,9 @@ class AuthService {
   // Register function
   Future registerUser(String firstName, String lastName, String email, String password) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      // Old code
+      // AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       
       // Save user data on firestore
       await DatabaseService(uid: result.user.uid).addUserData(email, firstName, lastName);
@@ -52,7 +54,7 @@ class AuthService {
   // Check if the user logged in previously
   Future checkIsLoggedIn() async {
     try {
-      FirebaseUser user = await _auth.currentUser();
+      User user = _auth.currentUser;
       return user;
     } catch (e) {
       return null;

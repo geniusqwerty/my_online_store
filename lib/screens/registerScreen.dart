@@ -248,7 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       _isLoading = true;          
                     });
                     // Call the register function
-                    FirebaseUser user = await _authService.registerUser(_firstName, _lastName, _email, _password);
+                    User user = await _authService.registerUser(_firstName, _lastName, _email, _password);
                     if(user != null) {
                       Navigator.pushReplacementNamed(context, 'dash', arguments: user.uid);
                     } else {

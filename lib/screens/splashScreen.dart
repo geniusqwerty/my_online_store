@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkUser() async {
-    FirebaseUser user = await _authService.checkIsLoggedIn();
+    User user = await _authService.checkIsLoggedIn();
     if( user != null) {
       Navigator.pushReplacementNamed(context, 'dash', arguments: user.uid);
     } else {

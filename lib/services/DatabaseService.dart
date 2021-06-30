@@ -6,19 +6,19 @@ class DatabaseService {
   final String uid;
   DatabaseService({ this.uid });
   // Collection reference for the user
-  CollectionReference userRef = Firestore.instance.collection("users");
+  CollectionReference userRef = FirebaseFirestore.instance.collection("users");
 
   // Collection reference for the product
-  CollectionReference itemRef = Firestore.instance.collection("product");
+  CollectionReference itemRef = FirebaseFirestore.instance.collection("product");
 
   // Collection reference for the cart
-  CollectionReference cartRef = Firestore.instance.collection("cart");
+  CollectionReference cartRef = FirebaseFirestore.instance.collection("cart");
   
   // Add the user
   Future addUserData(email, firstName, lastName) async {
     try {
       // Add the user to the collection
-      return await userRef.document(uid).setData({
+      return await userRef.doc(uid).set({
         'email': email,
         'firstName' : firstName,
         'lastName' : lastName
@@ -34,7 +34,7 @@ class DatabaseService {
     try {
       // fetch the specific user
       // using the user id
-      return await userRef.document(uid).get();
+      return await userRef.doc(uid).get();
     } catch (e) {
       print(e.toString());
       return null;
@@ -44,7 +44,7 @@ class DatabaseService {
   // Fetch the products/items
   Future fetchProducts() async {
     try {
-      return await itemRef.getDocuments();
+      return await itemRef.get();
     } catch(e) {
       print(e.toString());
       return null;
@@ -54,7 +54,7 @@ class DatabaseService {
   // Add to cart function
   Future addToCart(String itemId) async {
     try {
-      return await cartRef.document().setData({
+      return await cartRef.doc().set({
         'userId': uid,
         'itemId': itemId
       });
@@ -79,7 +79,7 @@ class DatabaseService {
   // Fetch the product based on the product id
   Future fetchItemInfo(String itemId) async {
     try {
-      return await itemRef.document(itemId).get();
+      return await itemRef.doc(itemId).get();
     } catch (e) {
       print(e.toString());
       return null;
@@ -89,7 +89,7 @@ class DatabaseService {
   // Function to delete the cart based on the cartId
   Future deleteCart(String cartId) async {
     try {
-      return await cartRef.document(cartId).delete();
+      return await cartRef.doc(cartId).delete();
     } catch (e) {
       print(e.toString());
       return null;

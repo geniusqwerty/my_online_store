@@ -42,7 +42,9 @@ class _CartScreenState extends State<CartScreen> {
         if(snapshot.hasData) {
           // hold to the value of the cart items
           List carts = [];
-          snapshot.data.documents.map((cart) {
+          // old code
+          // snapshot.data.documents.map((cart) {
+          snapshot.data.docs.map((cart) {
             print(cart['itemId']);
             carts.add(cart);
           }).toList();

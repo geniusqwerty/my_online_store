@@ -1,6 +1,8 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:my_online_store_1/services/AuthService.dart';
 import 'package:my_online_store_1/services/DatabaseService.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
@@ -45,6 +47,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // Button to navigate to the Cart Screen
               ElevatedButton.icon(
                 onPressed: () {
+                  // Simulate the crash
+                  // FirebaseCrashlytics.instance.crash();
                   Navigator.pushNamed(context, 'cart');
                 }, 
                 icon: Icon(Icons.shopping_bag_outlined), 
@@ -92,7 +96,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             // List to put the documents
             List items = [];
-            snapshot.data.documents.map((item) {
+            // Old code
+            // snapshot.data.documents.map((item) {
+            snapshot.data.docs.map((item) {
               items.add(item);
             }).toList();
             return Expanded(
